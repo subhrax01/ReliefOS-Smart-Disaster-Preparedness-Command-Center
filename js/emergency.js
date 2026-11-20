@@ -1,7 +1,7 @@
 /* ==========================================================================
    ReliefOS — Emergency Assistance Center & Contact Manager
    Integrates India's official 112 emergency dialing workflow with safe confirmation.
-   Manages client-side encrypted emergency contacts with one-tap dialing.
+   Manages unencrypted local browser contacts with a dial shortcut.
    ========================================================================== */
 
 import { Storage } from './storage.js';

@@ -43,11 +43,11 @@ function initIntroSequence() {
   if (!overlay) return;
 
   const logs = [
-    'Connecting localized telemetry sensor grid...',
-    'Loading West Bengal disaster vulnerability matrices...',
-    'Mounting offline service worker cache storage...',
-    'Verifying emergency response telephone bindings (112)...',
-    'ReliefOS Command Shell Nominal // Online.'
+    'Preparing local preparedness dashboard...',
+    'Loading disaster preparedness references...',
+    'Preparing offline cache support...',
+    'Preparing emergency dial shortcut (112)...',
+    'ReliefOS dashboard ready.'
   ];
 
   let progress = 0;

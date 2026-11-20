@@ -10,9 +10,9 @@
   "icons": [
     {
       "src": "assets/icons/logo.svg",
-      "sizes": "120x120 192x192 512x512",
+      "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "categories": ["utilities", "safety", "government"]

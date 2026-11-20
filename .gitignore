@@ -1,0 +1,14 @@
+# Local OS and editor metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local build artifacts and sensitive configuration
+node_modules/
+coverage/
+*.log
+*.tmp
+.env
+.env.*
+!.env.example
