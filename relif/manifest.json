@@ -1,0 +1,19 @@
+{
+  "name": "ReliefOS — Disaster Preparedness Command",
+  "short_name": "ReliefOS",
+  "description": "Futuristic Disaster Preparedness & Community Safety Web Application for India and West Bengal.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050814",
+  "theme_color": "#050814",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/icons/logo.svg",
+      "sizes": "120x120 192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "safety", "government"]
+}

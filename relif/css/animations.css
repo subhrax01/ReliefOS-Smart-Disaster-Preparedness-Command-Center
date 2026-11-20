@@ -1,0 +1,133 @@
+/* ==========================================================================
+   ReliefOS — Futuristic Keyframe Animations & Microinteractions
+   ========================================================================== */
+
+@keyframes beaconPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7);
+  }
+  70% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 8px rgba(0, 230, 118, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 230, 118, 0);
+  }
+}
+
+@keyframes dangerPulse {
+  0% {
+    transform: scale(0.98);
+    box-shadow: 0 0 10px rgba(255, 23, 68, 0.5);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 25px rgba(255, 23, 68, 0.9);
+  }
+  100% {
+    transform: scale(0.98);
+    box-shadow: 0 0 10px rgba(255, 23, 68, 0.5);
+  }
+}
+
+@keyframes logoPulse {
+  0% {
+    filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.5));
+    transform: scale(0.98);
+  }
+  50% {
+    filter: drop-shadow(0 0 30px rgba(0, 229, 255, 0.9));
+    transform: scale(1.02);
+  }
+  100% {
+    filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.5));
+    transform: scale(0.98);
+  }
+}
+
+@keyframes fadeInView {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes audioPulse {
+  0%, 100% {
+    transform: scaleY(1);
+    color: var(--accent-cyan);
+  }
+  50% {
+    transform: scaleY(1.3);
+    color: #FFFFFF;
+    filter: drop-shadow(0 0 8px var(--accent-cyan));
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Skeleton Loader Utility */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(0, 229, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* Accessible Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .status-beacon,
+  .intro-logo,
+  .btn-danger {
+    animation: none !important;
+  }
+
+  .radar-canvas {
+    animation: none !important;
+  }
+}
+
+body.reduced-motion *, 
+body.reduced-motion *::before, 
+body.reduced-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}

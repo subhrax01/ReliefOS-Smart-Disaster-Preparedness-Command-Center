@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>ReliefOS — Disaster Preparedness Command System</title>
+  <meta name="description" content="Futuristic Disaster Preparedness & Community Safety Web Application for India and West Bengal. When every second matters.">
+  <meta name="theme-color" content="#050814">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Ambient Tactical HUD Grid Overlay -->
+  <div class="hud-grid-overlay" aria-hidden="true"></div>
+
+  <!-- Mobile Sidebar Backdrop Scrim -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
+
+  <!-- ==========================================================================
+       A. FUTURISTIC INTRO EXPERIENCE (INITIALIZATION HUD)
+       ========================================================================== -->
+  <div class="intro-overlay" id="intro-overlay" role="dialog" aria-modal="true" aria-label="System Initializing">
+    <div class="intro-content">
+      <img src="assets/icons/logo.svg" alt="ReliefOS Emblematics" class="intro-logo">
+      <h1 class="intro-title">RELIEF<span style="color: var(--accent-cyan);">OS</span></h1>
+      <p class="intro-tagline">"When Every Second Matters."</p>
+
+      <div class="intro-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        <div class="intro-progress-fill" id="intro-progress-fill"></div>
+      </div>
+
+      <div class="intro-log-text" id="intro-log-text">Initializing telemetry sensor grid...</div>
+
+      <button class="intro-skip-btn" id="btn-skip-intro">
+        [ Skip Intro // ESC ]
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       APPLICATION CONTAINER
+       ========================================================================== -->
+  <div class="app-container">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar" id="app-sidebar" aria-label="Main Navigation">
+      <div class="sidebar-header">
+        <a href="#dashboard" class="brand-wrapper" data-route="dashboard">
+          <img src="assets/icons/logo.svg" alt="ReliefOS" class="brand-logo-img">
+          <div class="brand-text">
+            <span class="brand-title">RELIEF<span style="color:var(--accent-cyan);">OS</span></span>
+            <span class="brand-tagline">COMMAND MATRIX</span>
+          </div>
+        </a>
+        <button class="sidebar-collapse-btn" id="btn-sidebar-collapse" aria-label="Toggle Sidebar Width">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <polyline points="11 17 6 12 11 7"/>
+            <polyline points="18 17 13 12 18 7"/>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Command Matrix</div>
+        <button class="nav-item active" data-route="dashboard">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </span>
+          <span class="nav-item-text" data-i18n="navDashboard">Command Dashboard</span>
+        </button>
+
+        <button class="nav-item" data-route="preparedness">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </span>
+          <span class="nav-item-text" data-i18n="navPreparedness">Disaster Guides</span>
+          <span class="nav-item-badge">5 HAZARDS</span>
+        </button>
+
+        <button class="nav-item" data-route="emergency">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </span>
+          <span class="nav-item-text" data-i18n="navEmergency">Emergency 112</span>
+          <span class="badge badge-red" style="padding:0.1rem 0.35rem; font-size:0.65rem;">SOS</span>
+        </button>
+
+        <button class="nav-item" data-route="location">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+          </span>
+          <span class="nav-item-text" data-i18n="navLocation">Smart Location</span>
+        </button>
+
+        <div class="nav-section-label">Civic Intelligence</div>
+        <button class="nav-item" data-route="analyzer">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+          </span>
+          <span class="nav-item-text" data-i18n="navAnalyzer">Readiness Analyzer</span>
+        </button>
+
+        <button class="nav-item" data-route="reports">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </span>
+          <span class="nav-item-text" data-i18n="navReports">Community Reports</span>
+          <span class="badge badge-demo" style="font-size:0.65rem;">DEMO</span>
+        </button>
+
+        <div class="nav-section-label">System Control</div>
+        <button class="nav-item" data-route="settings">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </span>
+          <span class="nav-item-text" data-i18n="navSettings">Settings & System</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="system-status-pill">
+          <div class="status-beacon"></div>
+          <span data-i18n="systemNominal">SYSTEM NOMINAL // STANDBY</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEW WRAPPER -->
+    <div class="main-wrapper" id="app-main-wrapper">
+
+      <!-- TOP COMMAND HEADER -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="mobile-menu-btn" id="btn-mobile-menu" aria-label="Open Mobile Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+
+          <!-- Realtime Local Clock -->
+          <div class="header-time-chip" title="Realtime IST Telemetry">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span class="time-clock" id="hud-live-clock">--:--:--</span>
+            <span class="time-date" id="hud-live-date">---</span>
+          </div>
+
+          <!-- Location Selector Chip -->
+          <div class="header-location-chip" data-route="location" title="Click to adjust coordinates">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span id="header-location-name">Kolkata, WB</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Network Connectivity Badge -->
+          <div class="network-badge" id="hud-network-badge" title="Browser Connectivity Status">
+            <div class="network-dot"></div>
+            <span id="hud-network-label" data-i18n="onlineNotice">ONLINE</span>
+          </div>
+
+          <!-- Quick Search -->
+          <button class="search-trigger-btn" id="btn-search-trigger" aria-label="Search Disaster Knowledge Base">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span data-i18n="quickSearch">Search</span>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+
+          <!-- Language Switcher Toggle -->
+          <button class="lang-toggle-btn" id="btn-lang-toggle" title="Toggle Language (English / বাংলা)">
+            🌐 <span class="lang-label">বাংলা</span>
+          </button>
+
+          <!-- Urgent SOS 112 Trigger -->
+          <button class="header-sos-btn trigger-sos-112" aria-label="Trigger Emergency Dial 112">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <span data-i18n="callEmergency">CALL 112</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- CONTENT ROUTING AREA -->
+      <main class="content-area">
+
+        <!-- ==================================================================
+             VIEW: DASHBOARD
+             ================================================================== -->
+        <section class="view-section active" id="view-dashboard">
+          <div class="view-header">
+            <div class="view-pretitle" data-i18n="dashTelemetryTitle">Operational Command Telemetry</div>
+            <h1 class="view-title">Disaster Preparedness & Tactical Command</h1>
+            <p class="view-subtitle">Real-time localized emergency metrics, verified state protocols, and interactive survival readiness tracking for West Bengal.</p>
+          </div>
+
+          <!-- Top Grid: Readiness Gauge + Tactical Radar + Urgent SOS -->
+          <div class="dashboard-grid">
+            <!-- Readiness Gauge Card -->
+            <div class="hud-card col-span-5">
+              <div class="hud-card-header">
+                <div class="hud-card-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+                  <span data-i18n="dashReadinessTitle">Preparedness Readiness Index</span>
+                </div>
+                <span class="badge badge-verified" id="dash-readiness-level-badge">CALCULATING</span>
+              </div>
+              <div class="score-card-gauge">
+                <div class="radial-progress-wrapper">
+                  <svg class="radial-progress-svg" viewBox="0 0 100 100">
+                    <circle class="radial-progress-bg" cx="50" cy="50" r="45" stroke-width="8" fill="none"/>
+                    <circle class="radial-progress-fill" id="dash-readiness-circle-fill" cx="50" cy="50" r="45" stroke-width="8" fill="none"
+                            stroke-dasharray="282.74" stroke-dashoffset="282.74"/>
+                  </svg>
+                  <div class="radial-progress-center">
+                    <div class="radial-score-val" id="dash-readiness-val">0%</div>
+                    <div class="radial-score-label">INDEX</div>
+                  </div>
+                </div>
+                <div>
+                  <p class="hud-card-desc" style="margin-bottom:0.75rem;" data-i18n="dashReadinessSub">
+                    Dynamic score derived from completed household checklists and risk assessment.
+                  </p>
+                  <a href="#analyzer" class="btn btn-outline btn-sm" data-route="analyzer">
+                    Take Safety Assessment →
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tactical Hazard Radar -->
+            <div class="hud-card col-span-4" style="display:flex; flex-direction:column; justify-content:space-between;">
+              <div class="hud-card-header">
+                <div class="hud-card-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+                  <span data-i18n="dashRadarTitle">Tactical Hazard Radar</span>
+                </div>
+                <span class="badge badge-demo" data-i18n="demoBadge">DEMO RADAR</span>
+              </div>
+              <div class="radar-widget">
+                <div class="radar-canvas-wrap">
+                  <canvas id="dashboard-radar-canvas" class="radar-canvas"></canvas>
+                </div>
+                <div class="radar-hud-telemetry">
+                  <span>SWEEP: 360° CONT</span>
+                  <span>RANGE: 50 KM</span>
+                  <span>GRID: NOMINAL</span>
+                </div>
+              </div>
+              <p style="font-size:0.7rem; color:var(--text-muted); text-align:center; font-family:var(--font-mono); margin-top:0.4rem;">
+                * Simulated decorative telemetry radar. Does not represent live weather radar.
+              </p>
+            </div>
+
+            <!-- Urgent Emergency SOS Card -->
+            <div class="hud-card col-span-3 emergency-call-card" style="display:flex; flex-direction:column; justify-content:space-between; border-color:rgba(255,23,68,0.4); background:rgba(25,10,24,0.7);">
+              <div>
+                <div class="hud-card-header" style="border-bottom-color:rgba(255,23,68,0.2);">
+                  <div class="hud-card-title" style="color:#FF5252;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#FF1744" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Emergency Dispatch
+                  </div>
+                  <span class="badge badge-red">INDIA 24/7</span>
+                </div>
+                <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.45; margin-bottom:1rem;">
+                  One-tap access to India's official National Universal Emergency Helpline 112 (Police, Fire, Medical, Rescue).
+                </p>
+              </div>
+
+              <div>
+                <button class="btn btn-danger btn-lg sos-large-button trigger-sos-112" style="width:100%; font-size:1.15rem; font-weight:800; letter-spacing:0.06em; margin-bottom:0.75rem;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  CALL 112
+                </button>
+                <a href="#emergency" class="btn btn-outline btn-sm" data-route="emergency" style="width:100%;">
+                  Open Helplines & Contacts →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mid Section: 5 Disaster Profiles Overview -->
+          <div style="margin-bottom: 2rem;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+              <h2 style="font-size:1.35rem; font-weight:700; color:#FFFFFF;" data-i18n="dashDisastersOverview">
+                High-Priority Disaster Profiles
+              </h2>
+              <a href="#preparedness" class="btn btn-outline btn-sm" data-route="preparedness">
+                View All Guides & Checklists →
+              </a>
+            </div>
+            <div class="disaster-grid" id="dash-disasters-cards">
+              <!-- Dynamically populated by dashboard.js -->
+            </div>
+          </div>
+
+          <!-- Bottom Grid: Local Activity Stream & Trust Statement -->
+          <div class="dashboard-grid">
+            <div class="hud-card col-span-7">
+              <div class="hud-card-header">
+                <div class="hud-card-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  <span data-i18n="dashActivityTitle">Local Activity & Audit Stream</span>
+                </div>
+                <span class="badge badge-cyan">ON-DEVICE</span>
+              </div>
+              <div id="dash-activity-stream">
+                <!-- Dynamically populated by dashboard.js -->
+              </div>
+            </div>
+
+            <div class="hud-card col-span-5" style="background:rgba(6,12,28,0.7);">
+              <div class="hud-card-header">
+                <div class="hud-card-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  Public Safety Notice
+                </div>
+                <span class="badge badge-verified">VERIFIED PROTOCOL</span>
+              </div>
+              <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.6; margin-bottom:1rem;">
+                ReliefOS provides verified civilian disaster preparedness instructions aligned with guidelines published by the <strong>National Disaster Management Authority (NDMA)</strong> and the <strong>Department of Disaster Management & Civil Defence, Government of West Bengal</strong>.
+              </p>
+              <div style="background:rgba(0,229,255,0.06); padding:0.75rem 1rem; border-radius:6px; border:1px solid rgba(0,229,255,0.2); font-size:0.78rem; font-family:var(--font-mono); color:var(--text-primary);">
+                🔒 Data Privacy Guarantee: All personal contacts, checklist progress, and incident drafts are stored strictly inside your browser's local sandbox. Zero telemetry is uploaded.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: DISASTER PREPAREDNESS GUIDES
+             ================================================================== -->
+        <section class="view-section" id="view-preparedness">
+          <div class="view-header">
+            <div class="view-pretitle" data-i18n="navPreparedness">Disaster Preparedness Center</div>
+            <h1 class="view-title">Standard Operating Procedures & Life Safety Guides</h1>
+            <p class="view-subtitle">Interactive multi-stage survival checklists, caution alerts, voice readouts, and recovery instructions tailored for West Bengal.</p>
+          </div>
+
+          <!-- Category Tabs -->
+          <div class="segmented-tabs" id="disaster-category-tabs">
+            <!-- Dynamically populated by preparedness.js -->
+          </div>
+
+          <!-- Active Disaster Guide Content -->
+          <div id="disaster-guide-content">
+            <!-- Dynamically populated by preparedness.js -->
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: EMERGENCY ASSISTANCE CENTER
+             ================================================================== -->
+        <section class="view-section" id="view-emergency">
+          <div class="view-header">
+            <div class="view-pretitle" data-i18n="navEmergency">Emergency Assistance Center</div>
+            <h1 class="view-title" data-i18n="emergencyViewTitle">Emergency Assistance Center</h1>
+            <p class="view-subtitle" data-i18n="emergencyViewDesc">Direct dial access to India's official emergency dispatch networks and your encrypted local personal contacts.</p>
+          </div>
+
+          <!-- Mandatory Public Safety Disclaimer Banner -->
+          <div class="hud-card" style="border-left:4px solid var(--status-warning); background:rgba(255,179,0,0.08); margin-bottom:1.75rem; padding:1.25rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; color:#FFD54F; font-weight:700; font-family:var(--font-mono); font-size:0.85rem; margin-bottom:0.35rem;">
+              ⚠️ IMPORTANT PUBLIC SAFETY DISCLAIMER
+            </div>
+            <p style="font-size:0.88rem; color:#F0F6FC; line-height:1.5;" data-i18n="emergencyDisclaimer">
+              ReliefOS is an independent preparedness tool. It does not automatically contact emergency responders, dispatch rescue services, or monitor emergencies. In an active life-threatening crisis, dial 112 directly.
+            </p>
+          </div>
+
+          <!-- Big Emergency Action Hero -->
+          <div class="hud-card" style="background:linear-gradient(135deg, rgba(255,23,68,0.15) 0%, rgba(13,25,54,0.8) 100%); border-color:rgba(255,23,68,0.5); padding:2rem; margin-bottom:2rem; text-align:center;">
+            <span class="badge badge-red" style="font-size:0.78rem; padding:0.25rem 0.75rem; margin-bottom:0.75rem;">NATIONAL EMERGENCY RESPONSE SUPPORT SYSTEM (ERSS)</span>
+            <h2 style="font-size:2.2rem; font-weight:800; color:#FFFFFF; margin-bottom:0.5rem; letter-spacing:-0.01em;">
+              Universal Emergency Helpline: 112
+            </h2>
+            <p style="font-size:0.95rem; color:var(--text-secondary); max-width:640px; margin:0 auto 1.5rem auto;">
+              Connecting Police (100), Fire (101), Ambulance (108), and State Disaster Management across all 23 districts of West Bengal.
+            </p>
+            <button class="btn btn-danger btn-lg trigger-sos-112" style="font-size:1.25rem; font-weight:800; padding:1.1rem 2.5rem; box-shadow:0 0 30px rgba(255,23,68,0.7);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="22" height="22"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span data-i18n="callEmergencyFull">CALL EMERGENCY SERVICES (112)</span>
+            </button>
+          </div>
+
+          <!-- Official Helplines Directory -->
+          <div style="margin-bottom:2.5rem;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem;">
+              <h2 style="font-size:1.35rem; font-weight:700; color:#FFFFFF;" data-i18n="officialHelplines">
+                Official Indian & West Bengal Helplines
+              </h2>
+              <span class="badge badge-verified">24/7 TOLL-FREE</span>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1.25rem;" id="official-helplines-grid">
+              <!-- Dynamically populated by emergency.js -->
+            </div>
+          </div>
+
+          <!-- Personal Contacts Manager -->
+          <div>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem;">
+              <div>
+                <h2 style="font-size:1.35rem; font-weight:700; color:#FFFFFF;" data-i18n="personalContacts">
+                  Personal Emergency Contacts
+                </h2>
+                <p style="font-size:0.8rem; color:var(--text-muted); font-family:var(--font-mono);">
+                  Stored exclusively in device LocalStorage. Accessible during offline conditions.
+                </p>
+              </div>
+              <button class="btn btn-primary btn-sm" data-open-modal="modal-add-contact" data-i18n="addContactBtn">
+                + Add Personal Contact
+              </button>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:0.75rem;" id="personal-contacts-list">
+              <!-- Dynamically populated by emergency.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: SMART LOCATION & GRID PIN
+             ================================================================== -->
+        <section class="view-section" id="view-location">
+          <div class="view-header">
+            <div class="view-pretitle" data-i18n="navLocation">Smart Geolocation & Grid Pin</div>
+            <h1 class="view-title" data-i18n="locationViewTitle">Smart Geolocation & Grid Pin</h1>
+            <p class="view-subtitle" data-i18n="locationViewDesc">Permission-based browser geolocation. Coordinates are processed strictly in your browser and never uploaded.</p>
+          </div>
+
+          <div class="dashboard-grid">
+            <!-- Left Panel: GPS Controls & Telemetry Data -->
+            <div class="hud-card col-span-5" style="display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div class="hud-card-header">
+                  <div class="hud-card-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+                    Position Fix Telemetry
+                  </div>
+                  <span class="badge badge-cyan">LOCAL GPS</span>
+                </div>
+
+                <div style="background:rgba(6,12,28,0.8); border:1px solid var(--border-subtle); border-radius:8px; padding:1.25rem; margin-bottom:1.25rem;">
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                    <div>
+                      <div style="font-size:0.72rem; font-family:var(--font-mono); color:var(--text-muted);">LATITUDE</div>
+                      <div style="font-size:1.15rem; font-family:var(--font-mono); font-weight:700; color:var(--accent-cyan);" id="geo-disp-lat">22.5726° N</div>
+                    </div>
+                    <div>
+                      <div style="font-size:0.72rem; font-family:var(--font-mono); color:var(--text-muted);">LONGITUDE</div>
+                      <div style="font-size:1.15rem; font-family:var(--font-mono); font-weight:700; color:var(--accent-cyan);" id="geo-disp-lon">88.3639° E</div>
+                    </div>
+                  </div>
+                  <div style="border-top:1px solid rgba(255,255,255,0.06); padding-top:0.75rem;">
+                    <div style="font-size:0.72rem; font-family:var(--font-mono); color:var(--text-muted);">REGION / DISTRICT</div>
+                    <div style="font-size:0.95rem; font-weight:600; color:#FFFFFF;" id="geo-disp-name">Kolkata, West Bengal (Default Demo)</div>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; font-size:0.72rem; font-family:var(--font-mono); color:var(--text-muted); margin-top:0.6rem;">
+                    <span>ACCURACY: <strong style="color:var(--status-safe);" id="geo-disp-acc">Manual Preset</strong></span>
+                    <span>TIMESTAMP: <strong id="geo-disp-time">--:--</strong></span>
+                  </div>
+                </div>
+
+                <!-- GPS Trigger Button -->
+                <button class="btn btn-primary btn-lg" id="btn-detect-gps" style="width:100%; margin-bottom:0.75rem;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m22 2-7 20-4-9-9-4Z"/></svg>
+                  <span data-i18n="requestLocationBtn">Detect Current GPS Coordinates</span>
+                </button>
+
+                <div style="display:flex; gap:0.6rem;">
+                  <button class="btn btn-outline btn-sm" id="btn-copy-coords" style="flex:1;" onclick="window.ReliefOS_CopyCoords()">
+                    📋 <span data-i18n="copyCoordsBtn">Copy Coordinates</span>
+                  </button>
+                  <a href="https://www.openstreetmap.org" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" id="geo-map-external-link" style="flex:1;">
+                    🗺️ <span data-i18n="openMapBtn">Open in Satellite Map</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Manual District Selection -->
+              <div style="margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid rgba(255,255,255,0.08);">
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-label" for="select-wb-district" data-i18n="manualLocationTitle">
+                    Manual West Bengal District Selection
+                  </label>
+                  <select class="form-select" id="select-wb-district">
+                    <!-- Populated by geolocation.js -->
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Panel: Tactical Vector Reticle Map -->
+            <div class="hud-card col-span-7" style="display:flex; flex-direction:column; justify-content:space-between;">
+              <div class="hud-card-header">
+                <div class="hud-card-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                  Tactical Grid Reticle
+                </div>
+                <span class="badge badge-demo">SIMULATED TILES</span>
+              </div>
+
+              <div style="border-radius:10px; overflow:hidden; border:1px solid var(--border-subtle); background:#060c1d; position:relative;">
+                <canvas id="tactical-grid-canvas" style="width:100%; height:300px; display:block;"></canvas>
+              </div>
+
+              <div style="margin-top:1rem; padding:0.75rem 1rem; background:rgba(6,12,28,0.7); border-radius:6px; font-size:0.78rem; color:var(--text-secondary); line-height:1.45;">
+                <strong style="color:var(--status-warning);">Notice:</strong> To maintain maximum client reliability in extreme zero-connectivity disaster zones, ReliefOS uses native vector canvas rendering. No commercial tracking API keys are required.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: READINESS ANALYZER
+             ================================================================== -->
+        <section class="view-section" id="view-analyzer">
+          <div class="view-header">
+            <div class="view-pretitle" data-i18n="navAnalyzer">Preparedness Readiness Analyzer</div>
+            <h1 class="view-title" data-i18n="analyzerTitle">Preparedness Readiness Analyzer</h1>
+            <p class="view-subtitle" data-i18n="analyzerDesc">Evaluate your household's safety readiness with this rule-based questionnaire.</p>
+          </div>
+
+          <div class="dashboard-grid">
+            <!-- Questionnaire Form -->
+            <div class="hud-card col-span-7">
+              <div class="hud-card-header">
+                <div class="hud-card-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  Household Readiness Survey
+                </div>
+                <span class="badge badge-cyan">7 BENCHMARKS</span>
+              </div>
+
+              <form id="form-readiness-analyzer" style="display:flex; flex-direction:column; gap:1.2rem;">
+                <div style="background:rgba(6,12,28,0.6); padding:1rem; border-radius:8px; border:1px solid var(--border-subtle);">
+                  <div style="font-weight:600; font-size:0.92rem; color:#FFFFFF; margin-bottom:0.6rem;">
+                    1. Do you know India's Universal Emergency Number (112)?
+                  </div>
+                  <div style="display:flex; gap:1.5rem; font-family:var(--font-mono); font-size:0.85rem;">
+                    <label style="cursor:pointer;"><input type="radio" name="q1" value="yes" required> Yes, fully familiar</label>
+                    <label style="cursor:pointer;"><input type="radio" name="q1" value="no"> No / Unsure</label>
+                  </div>
+                </div>
+
+                <div style="background:rgba(6,12,28,0.6); padding:1rem; border-radius:8px; border:1px solid var(--border-subtle);">
+                  <div style="font-weight:600; font-size:0.92rem; color:#FFFFFF; margin-bottom:0.6rem;">
+                    2. Does your family have a pre-agreed disaster meeting point and communication plan?
+                  </div>
+                  <div style="display:flex; gap:1.5rem; font-family:var(--font-mono); font-size:0.85rem;">
+                    <label style="cursor:pointer;"><input type="radio" name="q2" value="yes" required> Yes, planned</label>
+                    <label style="cursor:pointer;"><input type="radio" name="q2" value="no"> No plan yet</label>
+                  </div>
+                </div>
+
+                <div style="background:rgba(6,12,28,0.6); padding:1rem; border-radius:8px; border:1px solid var(--border-subtle);">
+                  <div style="font-weight:600; font-size:0.92rem; color:#FFFFFF; margin-bottom:0.6rem;">
+                    3. Are critical family documents (Aadhaar, deeds, marksheets) in waterproof pouches or secure cloud storage?
+                  </div>
+                  <div style="display:flex; gap:1.5rem; font-family:var(--font-mono); font-size:0.85rem;">
+                    <label style="cursor:pointer;"><input type="radio" name="q3" value="yes" required> Yes, waterproofed</label>
+                    <label style="cursor:pointer;"><input type="radio" name="q3" value="no"> Not secured</label>
+                  </div>
+                </div>
+
+                <div style="background:rgba(6,12,28,0.6); padding:1rem; border-radius:8px; border:1px solid var(--border-subtle);">
+                  <div style="font-weight:600; font-size:0.92rem; color:#FFFFFF; margin-bottom:0.6rem;">
+                    4. Do you have a packed 72-hour survival kit (sealed water, ORS, dry food, torch, power bank)?
+                  </div>
+                  <div style="display:flex; gap:1.5rem; font-family:var(--font-mono); font-size:0.85rem;">
+                    <label style="cursor:pointer;"><input type="radio" name="q4" value="yes" required> Yes, ready</label>
+                    <label style="cursor:pointer;"><input type="radio" name="q4" value="no"> Incomplete / None</label>
+                  </div>
+                </div>
+
+                <div style="background:rgba(6,12,28,0.6); padding:1rem; border-radius:8px; border:1px solid var(--border-subtle);">
+                  <div style="font-weight:600; font-size:0.92rem; color:#FFFFFF; margin-bottom:0.6rem;">
+                    5. Have you identified the nearest designated Multipurpose Cyclone Shelter (MPCS) or high ground?
+                  </div>
+                  <div style="display:flex; gap:1.5rem; font-family:var(--font-mono); font-size:0.85rem;">
+                    <label style="cursor:pointer;"><input type="radio" name="q5" value="yes" required> Yes, location known</label>
+                    <label style="cursor:pointer;"><input type="radio" name="q5" value="no"> Not identified</label>
+                  </div>
+                </div>
+
+                <div style="background:rgba(6,12,28,0.6); padding:1rem; border-radius:8px; border:1px solid var(--border-subtle);">
+                  <div style="font-weight:600; font-size:0.92rem; color:#FFFFFF; margin-bottom:0.6rem;">
+                    6. Do all adult family members know how to immediately shut off the electrical main breaker & LPG gas valve?
+                  </div>
+                  <div style="display:flex; gap:1.5rem; font-family:var(--font-mono); font-size:0.85rem;">
+                    <label style="cursor:pointer;"><input type="radio" name="q6" value="yes" required> Yes, trained</label>
+                    <label style="cursor:pointer;"><input type="radio" name="q6" value="no"> Not trained</label>
+                  </div>
+                </div>
+
+                <div style="background:rgba(6,12,28,0.6); padding:1rem; border-radius:8px; border:1px solid var(--border-subtle);">
+                  <div style="font-weight:600; font-size:0.92rem; color:#FFFFFF; margin-bottom:0.6rem;">
+                    7. Do you have a stocked First Aid kit with essential chronic medications for elderly members?
+                  </div>
+                  <div style="display:flex; gap:1.5rem; font-family:var(--font-mono); font-size:0.85rem;">
+                    <label style="cursor:pointer;"><input type="radio" name="q7" value="yes" required> Yes, stocked</label>
+                    <label style="cursor:pointer;"><input type="radio" name="q7" value="no"> Inadequate</label>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" style="margin-top:0.5rem;" data-i18n="calculateScoreBtn">
+                  Calculate My Readiness Score
+                </button>
+              </form>
+            </div>
+
+            <!-- Score Results & Recommendations -->
+            <div class="hud-card col-span-5" id="analyzer-results-panel" style="display:none;">
+              <div class="hud-card-header">
+                <div class="hud-card-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span data-i18n="scoreResultTitle">Your Safety Readiness Assessment</span>
+                </div>
+                <span class="badge badge-verified" id="analyzer-level-badge">CALCULATED</span>
+              </div>
+
+              <div style="text-align:center; padding:1.5rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                <div style="font-family:var(--font-mono); font-size:3.5rem; font-weight:800; color:#00E5FF; line-height:1;" id="analyzer-score-val">
+                  0%
+                </div>
+                <div style="font-size:0.78rem; font-family:var(--font-mono); color:var(--text-muted); margin-top:0.4rem;">
+                  OVERALL RESILIENCE SCORE
+                </div>
+                <div class="hud-progress-bar" style="margin-top:1.25rem; height:10px;">
+                  <div class="hud-progress-fill" id="analyzer-score-fill" style="width:0%;"></div>
+                </div>
+              </div>
+
+              <div style="padding-top:1.25rem;">
+                <h4 style="font-size:1rem; font-weight:700; color:#FFFFFF; margin-bottom:0.75rem;" data-i18n="recommendationsTitle">
+                  Prioritized Recommendations
+                </h4>
+                <ul id="analyzer-recommendations-list" style="padding-left:1.25rem; line-height:1.6;">
+                  <!-- Dynamically populated -->
+                </ul>
+              </div>
+
+              <div style="margin-top:1.5rem; padding:0.75rem 1rem; background:rgba(255,179,0,0.08); border-radius:6px; border:1px solid rgba(255,179,0,0.25); font-size:0.75rem; color:#FFD54F;" data-i18n="analyzerDisclaimer">
+                EDUCATIONAL TOOL ONLY: This assessment provides general guidance and does not guarantee real-world survival or hazard immunity.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: COMMUNITY INCIDENT REPORTS DEMO
+             ================================================================== -->
+        <section class="view-section" id="view-reports">
+          <div class="view-header">
+            <div class="view-pretitle" data-i18n="navReports">Community Incident Reports</div>
+            <h1 class="view-title" data-i18n="reportsTitle">Community Incident Reporting Demo</h1>
+            <p class="view-subtitle" data-i18n="reportsDesc">Demonstration tool for documenting localized hazards. All entries remain strictly local in your browser storage.</p>
+          </div>
+
+          <!-- Prominent Disclaimer -->
+          <div class="hud-card" style="background:rgba(255,179,0,0.08); border-color:rgba(255,179,0,0.3); padding:1rem 1.25rem; margin-bottom:1.5rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; color:#FFD54F; font-family:var(--font-mono); font-size:0.82rem; font-weight:700; margin-bottom:0.25rem;">
+              ⚠️ LOCAL DRAFT SIMULATION — NOT TRANSMITTED
+            </div>
+            <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.45;" data-i18n="reportDisclaimer">
+              Reports submitted here are stored locally on your device for demonstration purposes. They are NOT sent to municipal, fire, or disaster authorities. To report real active emergencies, dial 112 immediately.
+            </p>
+          </div>
+
+          <!-- Controls Bar -->
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
+            <div style="display:flex; align-items:center; gap:0.75rem; flex:1; max-width:600px;">
+              <input type="text" class="form-input" id="search-report-input" placeholder="Search local drafts by keyword or location..." style="flex:1;">
+              <select class="form-select" id="filter-report-category" style="width:200px;">
+                <option value="all">All Categories</option>
+                <option value="road_flooding">Road Flooding</option>
+                <option value="fallen_tree">Fallen Tree</option>
+                <option value="power_outage">Power Outage</option>
+                <option value="infrastructure">Infrastructure</option>
+                <option value="structural_hazard">Structural Hazard</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" data-open-modal="modal-create-report" data-i18n="newReportBtn">
+              + Create Incident Draft
+            </button>
+          </div>
+
+          <!-- Reports List -->
+          <div style="display:flex; flex-direction:column; gap:1rem;" id="community-reports-list">
+            <!-- Dynamically populated by reports.js -->
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: SETTINGS & SYSTEM CONFIG
+             ================================================================== -->
+        <section class="view-section" id="view-settings">
+          <div class="view-header">
+            <div class="view-pretitle" data-i18n="navSettings">System Configuration</div>
+            <h1 class="view-title" data-i18n="settingsTitle">System Configuration & Preferences</h1>
+            <p class="view-subtitle">Accessibility modes, speech rate adjustments, language matrix, and browser persistence controls.</p>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="hud-card col-span-6">
+              <div class="hud-card-header">
+                <div class="hud-card-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  Localization & Accessibility
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-language-select" data-i18n="settingsLanguage">Interface Language</label>
+                <select class="form-select" id="setting-language-select">
+                  <option value="en">English (India / International)</option>
+                  <option value="bn">বাংলা (West Bengal Bengali)</option>
+                </select>
+              </div>
+
+              <div style="border-top:1px solid rgba(255,255,255,0.06); padding-top:1.25rem; margin-top:1.25rem; display:flex; flex-direction:column; gap:1rem;">
+                <label style="display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                  <div>
+                    <div style="font-weight:600; color:#FFFFFF;" data-i18n="settingsHighContrast">High-Contrast Accessibility Mode</div>
+                    <div style="font-size:0.75rem; color:var(--text-muted);">Pure black background with ultra-luminous cyan borders.</div>
+                  </div>
+                  <input type="checkbox" id="setting-high-contrast" style="width:20px; height:20px;">
+                </label>
+
+                <label style="display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                  <div>
+                    <div style="font-weight:600; color:#FFFFFF;" data-i18n="settingsReducedMotion">Reduced Motion (Low Hardware Mode)</div>
+                    <div style="font-size:0.75rem; color:var(--text-muted);">Disables decorative sweep animations and radar loops.</div>
+                  </div>
+                  <input type="checkbox" id="setting-reduced-motion" style="width:20px; height:20px;">
+                </label>
+              </div>
+            </div>
+
+            <div class="hud-card col-span-6">
+              <div class="hud-card-header">
+                <div class="hud-card-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                  Voice Assistance & Local Storage
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-voice-speed" data-i18n="settingsVoiceSpeed">Voice Speaking Rate</label>
+                <select class="form-select" id="setting-voice-speed">
+                  <option value="0.75">0.75x (Deliberate & Slow)</option>
+                  <option value="1.0" selected>1.0x (Standard Operational)</option>
+                  <option value="1.25">1.25x (Fast Telemetry)</option>
+                </select>
+                <span class="form-hint">Uses native browser SpeechSynthesis engine in English or Bengali.</span>
+              </div>
+
+              <div style="border-top:1px solid rgba(255,255,255,0.06); padding-top:1.25rem; margin-top:1.25rem;">
+                <div style="font-weight:600; color:#FFFFFF; margin-bottom:0.35rem;" data-i18n="settingsStorageTitle">
+                  Local Browser Storage Management
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.45; margin-bottom:1rem;">
+                  All checklists, drafts, and custom contacts are safely kept inside your browser's private LocalStorage domain.
+                </p>
+                <button class="btn btn-outline btn-sm" id="btn-clear-all-data" style="color:var(--status-danger); border-color:rgba(255,23,68,0.4);" data-i18n="clearDataBtn">
+                  Purge All Locally Stored Data
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODALS & DIALOGS
+       ========================================================================== -->
+
+  <!-- Emergency 112 Call Confirmation Modal -->
+  <div class="modal-overlay" id="modal-emergency-confirm" role="dialog" aria-modal="true" aria-labelledby="sos-confirm-title">
+    <div class="modal-box" style="border-color:var(--status-danger); box-shadow:0 0 35px rgba(255,23,68,0.5);">
+      <div class="modal-header" style="border-bottom-color:rgba(255,23,68,0.25);">
+        <div class="modal-title" style="color:#FF5252;" id="sos-confirm-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="22" height="22"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span data-i18n="confirmCallTitle">EMERGENCY DIAL CONFIRMATION</span>
+        </div>
+        <button class="modal-close-btn" data-close-modal aria-label="Close Modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:1.05rem; color:#FFFFFF; margin-bottom:0.75rem;" data-i18n="confirmCallDesc">
+          You are about to launch your device telephone dialer for 112 (India Universal Emergency). Do you wish to continue?
+        </p>
+        <div style="background:rgba(6,12,28,0.8); border:1px solid rgba(255,23,68,0.3); border-radius:8px; padding:1rem; text-align:center; margin-bottom:1rem;">
+          <div style="font-size:0.75rem; font-family:var(--font-mono); color:var(--text-muted);">DIAL TARGET:</div>
+          <div style="font-size:2.2rem; font-weight:800; font-family:var(--font-mono); color:#FF1744;" id="sos-confirm-target-number">112</div>
+          <div style="font-size:0.85rem; color:var(--accent-cyan); font-family:var(--font-mono);" id="sos-confirm-target-name">Universal Emergency (ERSS India)</div>
+        </div>
+        <div style="font-size:0.78rem; color:var(--text-muted); line-height:1.4;">
+          * On mobile phones, this opens your native phone app dialer. On desktop computers, your designated VoIP/telephone link will be triggered.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" data-close-modal data-i18n="cancelBtn">Cancel</button>
+        <a href="tel:112" class="btn btn-danger" id="btn-confirm-dial-112" data-i18n="confirmDialBtn">
+          Proceed to Call 112
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Personal Contact Modal -->
+  <div class="modal-overlay" id="modal-add-contact" role="dialog" aria-modal="true" aria-labelledby="add-contact-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title" id="add-contact-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+          Add Personal Emergency Contact
+        </div>
+        <button class="modal-close-btn" data-close-modal aria-label="Close Modal">✕</button>
+      </div>
+      <form id="form-add-contact">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="input-contact-name" data-i18n="contactName">Full Name</label>
+            <input type="text" class="form-input" id="input-contact-name" placeholder="e.g. Dr. Animesh Roy / Sister" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-contact-relation" data-i18n="contactRelation">Relationship / Role</label>
+            <input type="text" class="form-input" id="input-contact-relation" placeholder="e.g. Family Doctor, Next of Kin, Neighbor">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-contact-phone" data-i18n="contactPhone">Phone Number</label>
+            <input type="tel" class="form-input" id="input-contact-phone" placeholder="e.g. +91 98300 00000" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-contact-notes" data-i18n="contactNotes">Medical / Location Notes (Optional)</label>
+            <input type="text" class="form-input" id="input-contact-notes" placeholder="e.g. Has duplicate keys, B+ blood type, Salt Lake Sector 1">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal data-i18n="cancelBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" data-i18n="saveContactBtn">Save Contact</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Create Incident Report Modal -->
+  <div class="modal-overlay" id="modal-create-report" role="dialog" aria-modal="true" aria-labelledby="create-report-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title" id="create-report-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          Document Hazard Incident (Local Draft)
+        </div>
+        <button class="modal-close-btn" data-close-modal aria-label="Close Modal">✕</button>
+      </div>
+      <form id="form-incident-report">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="report-hazard-type" data-i18n="reportType">Incident Category</label>
+            <select class="form-select" id="report-hazard-type">
+              <!-- Populated by reports.js -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="report-severity" data-i18n="reportSeverity">Estimated Severity</label>
+            <select class="form-select" id="report-severity">
+              <option value="Low">Low — Inconvenience only</option>
+              <option value="Medium" selected>Medium — Hazardous Obstacle</option>
+              <option value="High">High — Severe Danger / Blocked Access</option>
+              <option value="Critical">Critical — Immediate Threat to Life</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="report-location-input">
+              <span data-i18n="reportLocation">Landmark / Location</span>
+              <button type="button" class="btn btn-outline btn-sm" id="btn-autofill-location" style="padding:0.15rem 0.5rem; font-size:0.7rem;">
+                📍 Autofill Current
+              </button>
+            </label>
+            <input type="text" class="form-input" id="report-location-input" placeholder="e.g. VIP Road near Teghoria Signal" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="report-desc-input" data-i18n="reportDescription">Detailed Observations</label>
+            <textarea class="form-textarea" id="report-desc-input" placeholder="Describe the hazard condition, water depth, fallen cables, or road blockage..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="report-photo-input" data-i18n="reportImage">Attach Photo Proof (Local Preview)</label>
+            <input type="file" class="form-input" id="report-photo-input" accept="image/*">
+            <div id="report-photo-preview"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal data-i18n="cancelBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" data-i18n="saveReportDraftBtn">Save Local Draft</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Quick Search Modal (Ctrl+K) -->
+  <div class="modal-overlay" id="modal-quick-search" role="dialog" aria-modal="true" aria-label="Search Dialog">
+    <div class="modal-box" style="max-width:640px;">
+      <div class="modal-header" style="padding:0.75rem 1.25rem;">
+        <div style="display:flex; align-items:center; gap:0.6rem; flex:1;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="color:var(--accent-cyan);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="search-global-input" placeholder="Search guides, helplines, or procedures..." style="background:transparent; border:none; outline:none; color:#FFFFFF; font-size:1rem; width:100%; font-family:inherit;">
+        </div>
+        <button class="modal-close-btn" id="btn-search-close" aria-label="Close Search">✕</button>
+      </div>
+      <div class="modal-body" id="search-global-results" style="padding:0; max-height:360px;">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION MOUNT POINT -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Global Helper for Coordinates Copy -->
+  <script>
+    window.ReliefOS_CopyCoords = function() {
+      import('./js/geolocation.js').then(m => m.GeoSystem.copyCoordinates());
+    };
+  </script>
+
+  <!-- Entry Script (ES Module) -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

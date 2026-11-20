@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="#00E5FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Cyclone swirl paths -->
+  <path d="M24 6 C12 6 6 16 8 26 C9 31 14 36 20 37 C22 37.3 24 37 25 35 C26 33 25 31 23 30 C19 28 17 24 19 19 C21 14 26 12 31 14 C36 16 38 21 36 26 C34 31 29 35 24 35 C18 35 12 30 14 24" />
+  <path d="M24 16 A8 8 0 0 1 32 24 A8 8 0 0 1 24 32 A8 8 0 0 1 16 24" stroke="#2979FF" stroke-dasharray="2 3" />
+  <circle cx="24" cy="24" r="3" fill="#00E5FF" />
+</svg>
